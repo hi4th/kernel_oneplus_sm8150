@@ -1,4 +1,4 @@
-name: Build OnePlus-Sm8150-YAAP-KSU
+name: Build OnePlus-Sm8150-YAAP-KSU-google-git
 on:
   workflow_dispatch:
   schedule:
@@ -91,22 +91,22 @@ jobs:
     - name: Create AK3 zip for android 14
       run: |
        cd AnyKernel3
-       zip -r ../OP7-YAAP-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip *
+       zip -r ../OP7-YAAP-kernel-SU-google-git-${{ steps.get_version.outputs.VERSION }}.zip *
        cd ..
     - name: Upload Kernel-SU 14
       uses: actions/upload-artifact@v4
       with:
-        name: OP7-YAAP-kernel-SU-${{ steps.get_version.outputs.VERSION }}
+        name: OP7-YAAP-kernel-SU-google-git-${{ steps.get_version.outputs.VERSION }}
         path: "AnyKernel3/*"
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          OP7-YAAP-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
-        name: OnePlus7_kernelsu-${{ steps.get_version.outputs.VERSION }}
+          OP7-YAAP-kernel-SU-google-git-${{ steps.get_version.outputs.VERSION }}.zip
+        name: OnePlus7_kernelsu-google-git-${{ steps.get_version.outputs.VERSION }}
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         body: |
-          Device: Oneplus 7/Oneplus 7Pro/Oneplus 7T/Oneplus 7TPro
-          Target: LOS21
+          Device: Oneplus 7TPro
+          Target: YAAP 14
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
