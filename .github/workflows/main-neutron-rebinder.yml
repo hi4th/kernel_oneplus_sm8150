@@ -40,6 +40,9 @@ jobs:
         sudo apt install openjdk-17-jdk-headless -y
         # git clone -q https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64 --depth=1
         # git clone -q --depth=1 --single-branch https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b main aarch64
+        git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus7 --depth=1
+        rm -rf AnyKernel3/.git
+        
         mkdir -p "./toolchains/neutron-clang"
         cd "./toolchains/neutron-clang"
         curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman"
@@ -53,8 +56,6 @@ jobs:
         # axel -q -n 6 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r522817.tar.gz
         # mkdir clang && tar -zxvf clang-r522817.tar.gz -C clang
         
-        git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus7 --depth=1
-        rm -rf AnyKernel3/.git
         
     - name: Checkout Android 14 kernel source
       run: |
