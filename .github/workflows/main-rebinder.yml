@@ -65,6 +65,9 @@ jobs:
         cd ..
     - name: Add Re:binder support
       run: |
+        
+        sudo update-alternatives --config java
+        
         export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
         cd kernel
         wget https://github.com/Sakion-Team/Re-Kernel/releases/download/modifier/Kernel-Modifier-v2-X.jar
