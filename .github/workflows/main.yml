@@ -65,7 +65,13 @@ jobs:
         # cd kernel/KernelSU
         # git pull
         # cd ../../
-        
+    - name: Get Version
+      id: get_version
+      run: |
+        cd kernel/KernelSU
+        git rev-list --count HEAD
+        echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
+        cd ../../        
     - name: Setup LOS 21
       run: |
        export KERNEL_DEFCONFIG="gulch_defconfig"
