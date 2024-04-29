@@ -67,8 +67,8 @@ jobs:
     - name: Add Re:binder support
       run: |
         cd kernel
-        wget https://github.com/Sakion-Team/Re-Kernel/releases/download/modifier/Kernel-Modifier-v2-X.jar
-        java -jar ./Kernel-Modifier-v2-X.jar
+        wget https://github.com/Sakion-Team/Re-Kernel/releases/download/modifier/Kernel.Modifier.v3.6.jar
+        java -jar ./Kernel.Modifier.v3.6.jar
         cd ..
     - name: Get Version
       id: get_version
