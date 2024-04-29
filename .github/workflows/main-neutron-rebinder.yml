@@ -71,7 +71,7 @@ jobs:
         export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
         cd kernel
         wget https://github.com/Sakion-Team/Re-Kernel/releases/download/modifier/Kernel.Modifier.v3.6.jar
-        /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar ./Kernel-Modifier-v2-X.jar
+        /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar ./Kernel.Modifier.v3.6.jar
         cd ..
     - name: Get Version
       id: get_version
