@@ -70,8 +70,8 @@ jobs:
       run: |
         export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
         cd kernel
-        wget https://github.com/Sakion-Team/Re-Kernel/releases/download/modifier/Kernel-Modifier-v3.7.jar
-        /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar ./Kernel-Modifier-v3.7.jar
+        wget ：https://github.com/Sakion-Team/Re-Kernel/releases/download/modifier/Kernel-Modifier-v3.7-Test.jar
+        /usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar ./Kernel-Modifier-v3.7-Test.jar
         cd ..
     - name: Get Version
       id: get_version
