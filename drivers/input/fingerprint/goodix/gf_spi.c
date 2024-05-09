@@ -418,27 +418,21 @@ EXPORT_SYMBOL(opticalfp_irq_handler);
 int __always_inline gf_opticalfp_irq_handler(int event)
 {
 	struct gf_dev *gf_dev = &gf;
-	if (gf.spi == NULL) {
+
+	if (gf_dev->spi == NULL)
 		return 0;
-	}
+
 	gf_dev->gf_dev_req.type = PM_QOS_REQ_AFFINE_IRQ;
 	gf_dev->gf_dev_req.irq = gf_dev->irq;
 	irq_set_perf_affinity(gf_dev->irq, IRQF_PRIME_AFFINE);
-	pm_qos_add_request(&gf_dev->gf_dev_req, PM_QOS_CPU_DMA_LATENCY,
-		100);
+	pm_qos_add_request(&gf_dev->gf_dev_req, PM_QOS_CPU_DMA_LATENCY, 100);
 	__pm_wakeup_event(&fp_wakelock, 2000);
-	switch(event) {
-	case 1:
-	  gf_dev->udfps_pressed = 1;
-	  sysfs_notify(&gf_dev->spi->dev.kobj, NULL, dev_attr_udfps_pressed.attr.name);
-	  sendnlmsg(&(char){4});
-	  break;
-	case 0:
-	  gf_dev->udfps_pressed = 0;
-	  sysfs_notify(&gf_dev->spi->dev.kobj, NULL, dev_attr_udfps_pressed.attr.name);
-	  sendnlmsg(&(char){5});
-	  break;
-	}
+
+	gf_dev->udfps_pressed = event;
+	sysfs_notify(&gf_dev->spi->dev.kobj, NULL, dev_attr_udfps_pressed.attr.name);
+
+	sendnlmsg((char[]){(event == 1) ? 4 : 5});
+
 	pm_qos_remove_request(&gf_dev->gf_dev_req);
 
 	return 0;
@@ -449,55 +443,11 @@ static int __always_inline goodix_fb_state_chg_callback(
 	struct notifier_block *nb, unsigned long val, void *data)
 {
 	struct msm_drm_notifier *evdata = data;
-	struct gf_dev *gf_dev;
-	unsigned int blank;
-
-	if (val != MSM_DRM_EARLY_EVENT_BLANK &&
-		val != MSM_DRM_ONSCREENFINGERPRINT_EVENT)
-		return 0;
-
-	if (evdata->id != MSM_DRM_PRIMARY_DISPLAY)
-	    return 0;
-
-	blank = *(int *)(evdata->data);
-
-	switch (val) {
-	case MSM_DRM_ONSCREENFINGERPRINT_EVENT:
-		switch (blank) {
-		case 0:
-			sendnlmsg(&(char){7});
-			break;
-		case 1:
-			sendnlmsg(&(char){6});
-			break;
-		default:
-			break;
-		}
-		break;
-
-	case MSM_DRM_EARLY_EVENT_BLANK:
-		gf_dev = container_of(nb, struct gf_dev, msm_drm_notif);
-
-		if (evdata->data && gf_dev) {
-			blank = *(int *)(evdata->data);
-
-			if (gf_dev->device_available == 1) {
-				switch (blank) {
-				case MSM_DRM_BLANK_POWERDOWN:
-					gf_dev->fb_black = 1;
-					sendnlmsg(&(char){2});
-					break;
-				case MSM_DRM_BLANK_UNBLANK:
-					gf_dev->fb_black = 0;
-					sendnlmsg(&(char){3});
-					break;
-				default:
-					break;
-				}
-			}
-		}
-		break;
+	unsigned int blank = *(unsigned int*)evdata->data;
+	if (val != MSM_DRM_ONSCREENFINGERPRINT_EVENT) {
+		return NOTIFY_OK;
 	}
+	sendnlmsg((char[]){(blank == 1) ? 6 : 7});
 	return NOTIFY_OK;
 }
 
@@ -512,7 +462,6 @@ static int gf_probe(struct platform_device *pdev)
 	gf_dev->irq_gpio = -EINVAL;
 	gf_dev->reset_gpio = -EINVAL;
 	gf_dev->pwr_gpio = -EINVAL;
-	gf_dev->device_available = 1;
 	gf_dev->fb_black = 0;
 
 	/* If we can allocate a minor number, hook up this device.
@@ -605,8 +554,6 @@ err_irq:
 	gf_cleanup(gf_dev);
 err_parse_dt:
 error_hw:
-	gf_dev->device_available = 0;
-
 	return status;
 }
 
