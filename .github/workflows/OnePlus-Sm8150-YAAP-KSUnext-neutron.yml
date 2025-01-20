@@ -1,4 +1,4 @@
-name: Build OnePlus-Sm8150-YAAP-KSU-rebinder-neutron
+name: Build OnePlus-Sm8150-YAAP-KSUnext-neutron
 on:
   workflow_dispatch:
   schedule:
@@ -56,7 +56,7 @@ jobs:
         # mkdir clang && tar -zxvf clang-r522817.tar.gz -C clang
         
         
-    - name: Checkout Android 14 kernel source
+    - name: Checkout Android 15 kernel source
       run: |
         rm -rf kernel
         git clone --recurse-submodules https://github.com/hi4th/kernel_oneplus_sm8150 -b fifteen --depth=1 kernel
@@ -76,7 +76,7 @@ jobs:
     - name: Get Version
       id: get_version
       run: |
-        cd kernel/KernelSU
+        cd kernel/KernelSU-Next
         git rev-list --count HEAD
         echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
         cd ../../        
