@@ -64,7 +64,8 @@ jobs:
         # ln -sf ../KernelSU/kernel drivers/kernelsu && cd ..
         # cd kernel && patch -p1 < kernelsu.patch
         # curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
-        cd kernel && curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
+        cd kernel && patch -p1 < path_umount.patch
+        curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
         cd ..
     # - name: Add Re:binder support
     #   run: |
