@@ -62,7 +62,7 @@ jobs:
         git clone --recurse-submodules https://github.com/hi4th/kernel_oneplus_sm8150 -b fifteen --depth=1 kernel
         # cd kernel && rm -rf KernelSU && git clone https://github.com/tiann/KernelSU -b main --depth=1 
         # ln -sf ../KernelSU/kernel drivers/kernelsu && cd ..
-        cd kernel && patch -p1 < kernelsu.patch
+        # cd kernel && patch -p1 < kernelsu.patch
         # curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
         curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
         cd ..
